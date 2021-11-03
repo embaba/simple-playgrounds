@@ -12,6 +12,10 @@ ANGULAR_VELOCITY = 0.3
 ARM_MAX_FORCE = 500
 MAX_GRASP_FORCE = 600
 
+WALL_DEPTH = 10
+
+PYMUNK_STEPS = 10
+MAX_ATTEMPTS_OVERLAPPING = 100
 
 class KeyTypes(IntEnum):
 
@@ -111,7 +115,7 @@ class ElementTypes(IntEnum):
     SENSOR_DISABLER = auto()
     COMM_DISABLER = auto()
 
-    FIELD = auto()
+    SPAWNER = auto()
 
 
 class SensorTypes(IntEnum):
