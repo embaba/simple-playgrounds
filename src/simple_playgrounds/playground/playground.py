@@ -518,7 +518,6 @@ class Playground(ABC):
 
         for element_grasped, actuator in self._grasped_elements.copy().items():
             if not actuator.grasped:
-                element_grasped.held_by = None
                 self._grasped_elements.pop(element_grasped)
 
     # def _check_teleports(self):
@@ -642,7 +641,6 @@ class Playground(ABC):
         return min(self.agents,
                    key=lambda a: element.position.get_dist_sqrd(a.position))
 
-                    grasped_element.held_by = agent
     def _handle_interactions(self):
 
         # Order is important
