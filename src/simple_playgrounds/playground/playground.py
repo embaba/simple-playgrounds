@@ -37,16 +37,13 @@ from simple_playgrounds.common.timer import Timer
 
 from simple_playgrounds.element.element import SceneElement
 from simple_playgrounds.agent.agent import Agent
-from simple_playgrounds.agent.actuators import Grasp, Activate
+from simple_playgrounds.agent.actuators import Grasp
 from simple_playgrounds.common.spawner import Spawner
 from simple_playgrounds.element.elements.activable import Dispenser
 
-from simple_playgrounds.element.elements.modifier import ModifierElement
+from simple_playgrounds.agent.actuators import ActuatorDevice
 from simple_playgrounds.device.device import Device
 from simple_playgrounds.element.element import InteractiveElement
-
-from simple_playgrounds.element.elements.gem import GemElement
-from simple_playgrounds.element.elements.teleport import TeleportElement
 
 
 # pylint: disable=unused-argument
@@ -99,6 +96,7 @@ class Playground(ABC):
 
         self.communication_devices: List[CommunicationDevice] = []
         self._sensor_devices: List[SensorDevice] = []
+        self._actuator_devices: List[ActuatorDevice] = []
 
         # Private attributes for managing interactions in playground
         self._disappeared_elements: List[SceneElement] = []
@@ -256,6 +254,7 @@ class Playground(ABC):
 
         self._add_agent_to_playground(agent)
         self._add_sensor_devices(agent)
+        self._add_actuator_devices(agent)
         self._add_communication_devices(agent)
         self._move_to_initial_position(agent)
 
@@ -283,6 +282,10 @@ class Playground(ABC):
         for sensor in agent.sensors:
             self._sensor_devices.remove(sensor)
             self.space.remove(sensor.pm_shape)
+
+        for actuator in agent.actuators:
+            self._actuator_devices.remove(actuator)
+            self.space.remove(actuator.pm_shape)
 
         self.agents.remove(agent)
         agent.playground = None
@@ -370,6 +373,13 @@ class Playground(ABC):
             self.space.add(sensor.pm_shape)
             sensor.set_playground_size(self.size)
 
+    def _add_actuator_devices(self, agent: Agent):
+
+        # Set the invisible element filters
+        for actuator in agent.actuators:
+            self.space.add(actuator.pm_shape)
+            self._actuator_devices.append(actuator)
+
     # Private methods for Elements
 
     def _add_element_to_playground(self, element: SceneElement):
@@ -441,8 +451,8 @@ class Playground(ABC):
             if element in spawner.produced_entities:
                 spawner.produced_entities.remove(element)
 
-        if element.held_by:
-            element.held_by.release_grasp()
+        for grasper in element.held_by:
+            grasper.release_grasp()
 
         element.playground = False
 
@@ -631,7 +641,7 @@ class Playground(ABC):
             if part:
                 return part
 
-        for device in self.communication_devices + self._sensor_devices:
+        for device in self.communication_devices + self._sensor_devices + self._actuator_devices:
             if device.pm_shape is pm_shape:
                 return device
 
