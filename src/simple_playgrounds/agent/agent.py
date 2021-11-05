@@ -511,8 +511,11 @@ class Agent(ABC):
                                 (255, 255, 255))
         drawer_action_image = ImageDraw.Draw(img_actions)
 
-        fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf",
-                                 int(height_action * 2 / 3))
+        try:
+            fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf",
+                                     int(height_action * 2 / 3))
+        except OSError:
+            fnt = ImageFont.load_default()
 
         current_height = 0
 

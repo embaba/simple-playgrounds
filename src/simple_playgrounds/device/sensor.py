@@ -478,7 +478,10 @@ class InternalSensor(SensorDevice, ABC):
         drawer_image = ImageDraw.Draw(img)
 
         if self.sensor_values is not None:
-            fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", int(height * 1 / 2))
+            try:
+                fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", int(height * 1 / 2))
+            except OSError:
+                fnt = ImageFont.load_default()
             values_str = ", ".join(["%.2f" % e for e in self.sensor_values])
             w_text, h_text = fnt.getsize(text=values_str)
             pos_text = ((width - w_text) / 2, (height - h_text) / 2)
