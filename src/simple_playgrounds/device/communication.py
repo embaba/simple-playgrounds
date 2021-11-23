@@ -72,7 +72,7 @@ class CommunicationDevice(Device):
 
     def in_transmission_range(self, comm: CommunicationDevice):
 
-        dist = comm.position.get_distance(self.position)
+        dist_sqrd = comm.position.get_dist_sqrd(self.position)
 
         # If both have infinite range:
         if not (comm.transmission_range or self.transmission_range):
@@ -80,14 +80,14 @@ class CommunicationDevice(Device):
 
         # If only one has infinite range:
         elif (not comm.transmission_range) and self.transmission_range:
-            if dist < self.transmission_range:
+            if dist_sqrd < self.transmission_range ** 2:
                 return True
 
         elif comm.transmission_range and (not self.transmission_range):
-            if dist < comm.transmission_range:
+            if dist_sqrd < comm.transmission_range ** 2:
                 return True
 
-        elif dist < comm.transmission_range and dist < self.transmission_range:
+        elif dist_sqrd < comm.transmission_range ** 2 and dist_sqrd < self.transmission_range ** 2:
             return True
 
         return False
@@ -110,7 +110,7 @@ class CommunicationDevice(Device):
 
         if self.in_transmission_range(sender):
             self._received_messages.append((sender, msg))
-            self._received_messages.sort(key= (lambda s_m: self.position.get_distance(s_m[0].position)))
+            self._received_messages.sort(key=(lambda s_m: self.position.get_dist_sqrd(s_m[0].position)))
             if self._receiver_capacity:
                 self._received_messages = self._received_messages[:self._receiver_capacity]
 
