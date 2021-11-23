@@ -317,11 +317,14 @@ class RayBasedSensor(ExternalSensor, ABC):
     def _compute_collision(
         self,
         playground: Playground,
+        position_body,
+        angle_body: float,
         sensor_angle: float,
     ) -> Optional[pymunk.SegmentQueryInfo]:
 
-        position_body = self._anchor.pm_body.position
-        angle = self._anchor.pm_body.angle + sensor_angle
+        # position_body = self._anchor.pm_body.position
+        # angle = self._anchor.pm_body.angle + sensor_angle
+        angle = angle_body + sensor_angle
 
         position_end = position_body + pymunk.Vec2d(self._max_range,
                                                     0).rotated(angle)
@@ -350,8 +353,11 @@ class RayBasedSensor(ExternalSensor, ABC):
 
         points = {}
 
+        position_body = self._anchor.pm_body.position
+        angle_body = self._anchor.pm_body.angle
+
         for sensor_angle in self._ray_angles:
-            collision = self._compute_collision(playground, sensor_angle)
+            collision = self._compute_collision(playground, position_body, angle_body, sensor_angle)
             points[sensor_angle] = collision
 
         if self._remove_duplicates:
