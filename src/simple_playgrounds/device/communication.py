@@ -110,8 +110,8 @@ class CommunicationDevice(Device):
 
         if self.in_transmission_range(sender):
             self._received_messages.append((sender, msg))
-            self._received_messages.sort(key=(lambda s_m: self.position.get_dist_sqrd(s_m[0].position)))
-            if self._receiver_capacity:
+            if self._receiver_capacity and len(self._received_messages) > self._receiver_capacity:
+                self._received_messages.sort(key=(lambda s_m: self.position.get_dist_sqrd(s_m[0].position)))
                 self._received_messages = self._received_messages[:self._receiver_capacity]
 
 
