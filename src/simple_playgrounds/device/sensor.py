@@ -326,11 +326,22 @@ class RayBasedSensor(ExternalSensor, ABC):
         # angle = self._anchor.pm_body.angle + sensor_angle
         angle = angle_body + sensor_angle
 
-        position_end = position_body + pymunk.Vec2d(self._max_range,
-                                                    0).rotated(angle)
+        # position_end = position_body + pymunk.Vec2d(self._max_range,
+        #                                             0).rotated(angle)
+        #
+        # position_start = position_body + pymunk.Vec2d(self._min_range + 1,
+        #                                               0).rotated(angle)
 
-        position_start = position_body + pymunk.Vec2d(self._min_range + 1,
-                                                      0).rotated(angle)
+        cos = math.cos(angle)
+        sin = math.sin(angle)
+
+        pt1 = pymunk.Vec2d(self._min_range + 1, 0)
+        pt1_rot = pymunk.Vec2d(pt1.x * cos - pt1.y * sin, pt1.x * sin + pt1.y * cos)
+        position_start = position_body + pt1_rot
+
+        pt2 = pymunk.Vec2d(self._max_range, 0)
+        pt2_rot = pymunk.Vec2d(pt2.x * cos - pt2.y * sin, pt2.x * sin + pt2.y * cos)
+        position_end = position_body + pt2_rot
 
         inv_shapes = []
         for elem in self._invisible_elements + self._temporary_invisible:
