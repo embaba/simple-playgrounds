@@ -4,6 +4,7 @@ Module defining the Base Classes for Sensors.
 
 from __future__ import annotations
 from typing import List, Dict, Optional, Union, Tuple, TYPE_CHECKING
+
 if TYPE_CHECKING:
     from simple_playgrounds.playground.playground import Playground
 
@@ -239,6 +240,7 @@ class RayBasedSensor(ExternalSensor, ABC):
     Robotic sensors and Semantic sensors inherit from this class.
 
     """
+
     def __init__(
         self,
         anchor,
@@ -336,12 +338,12 @@ class RayBasedSensor(ExternalSensor, ABC):
         sin = math.sin(angle)
 
         pt1 = pymunk.Vec2d(self._min_range + 1, 0)
-        pt1_rot = pymunk.Vec2d(pt1.x * cos - pt1.y * sin, pt1.x * sin + pt1.y * cos)
-        position_start = position_body + pt1_rot
+        position_start = pymunk.Vec2d(position_body.x + pt1.x * cos - pt1.y * sin,
+                                      position_body.y + pt1.x * sin + pt1.y * cos)
 
         pt2 = pymunk.Vec2d(self._max_range, 0)
-        pt2_rot = pymunk.Vec2d(pt2.x * cos - pt2.y * sin, pt2.x * sin + pt2.y * cos)
-        position_end = position_body + pt2_rot
+        position_end = pymunk.Vec2d(position_body.x + pt2.x * cos - pt2.y * sin,
+                                    position_body.y + pt2.x * sin + pt2.y * cos)
 
         inv_shapes = []
         for elem in self._invisible_elements + self._temporary_invisible:
@@ -404,7 +406,6 @@ class RayBasedSensor(ExternalSensor, ABC):
 
 
 class ImageBasedSensor(ExternalSensor, ABC):
-
     """
     Base class for Image Based sensors.
     Image based sensors are computed using the top-down rendering of the playground.
@@ -465,13 +466,13 @@ class ImageBasedSensor(ExternalSensor, ABC):
 
         return image
 
+
 ##################
 # Internal Sensors
 ##################
 
 
 class InternalSensor(SensorDevice, ABC):
-
     """
     Base Class for Internal Sensors.
     """
