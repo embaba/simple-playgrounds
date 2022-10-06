@@ -73,7 +73,6 @@ class Grasper(ActiveInteractor, ABC):
 
         for entity in list(self._grasped_entities):
             self.release(entity)
-        self._can_grasp = False
 
         self._can_grasp = False
 
