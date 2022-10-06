@@ -1,3 +1,5 @@
+docs/
+doxyfile
 __pycache__
 .idea
 simple_playgrounds.egg-info
