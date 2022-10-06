@@ -75,6 +75,8 @@ class Grasper(ActiveInteractor, ABC):
             self.release(entity)
         self._can_grasp = False
 
+        self._can_grasp = False
+
         assert not self._grasped_entities
         assert not self._grasp_joints
 
