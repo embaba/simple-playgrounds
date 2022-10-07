@@ -172,6 +172,9 @@ class Agent(Entity):
 
     def receive_commands(self, commands: Commands):
 
+        if commands is None:
+            return
+
         # Set command values
         if isinstance(commands, np.ndarray):
             for index, controller in enumerate(self.controllers):
