@@ -280,7 +280,7 @@ class RayCompute:
 
             points = points.swapaxes(1, 2).reshape(-1, 2)
 
-            rr, cc = points[:, 1].astype(np.int), points[:, 0].astype(np.int)
+            rr, cc = points[:, 1].astype(int), points[:, 0].astype(int)
 
             # Get Ids
             pts = img_id[rr, cc]
@@ -307,7 +307,7 @@ class RayCompute:
             ]
 
             color = img_color[
-                view_position[:, 1].astype(np.int), view_position[:, 0].astype(np.int)
+                view_position[:, 1].astype(int), view_position[:, 0].astype(int)
             ]
             color[id_first_non_zero == 0] = (0, 0, 0)
 
@@ -480,7 +480,7 @@ class SemanticSensor(RaySensor):
 
         view_xy = self._hitpoints[:, :2]
         center_xy = self._hitpoints[:, 6:8]
-        id_detection = self._hitpoints[:, 8].astype(np.int)
+        id_detection = self._hitpoints[:, 8].astype(int)
 
         for ind_pt in range(len(view_xy)):
 
