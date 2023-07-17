@@ -56,6 +56,7 @@ class Communicator(PocketDevice):
 
         valid_comms = [com for com in comms if com is not self]
 
+        self._comms_in_range.clear()
         for comm in valid_comms:
             if self.in_transmission_range(comm):
                 self._comms_in_range.append(comm)
