@@ -406,20 +406,32 @@ class DistanceSensor(RaySensor):
         center_xy = self._hitpoints[:, 6:8]
         dist = 1 - self._hitpoints[:, 9] / self._range
 
-        for ind_pt in range(len(view_xy)):
+        point_list = []
+        color_list = []
 
-            color = (
-                int(dist[ind_pt] * 255),
-                int(dist[ind_pt] * 255),
-                int(dist[ind_pt] * 255),
-            )
-            arcade.draw_line(
-                center_xy[ind_pt, 0],
-                center_xy[ind_pt, 1],
-                view_xy[ind_pt, 0],
-                view_xy[ind_pt, 1],
-                color,
-            )
+        for (view, center, d) in zip(view_xy, center_xy, dist):
+            color_value = int(d * 255)
+            color = (color_value, color_value, color_value)
+
+            point_list.append((center[0], center[1]))
+            point_list.append((view[0], view[1]))
+            color_list.append(color)
+            color_list.append(color)
+
+        arcade.create_lines_with_colors(point_list, color_list).draw()
+
+        # for ind_pt in range(len(view_xy)):
+        #
+        #     color_value = int(dist[ind_pt] * 255)
+        #     color = (color_value, color_value, color_value)
+        #
+        #     arcade.draw_line(
+        #         center_xy[ind_pt, 0],
+        #         center_xy[ind_pt, 1],
+        #         view_xy[ind_pt, 0],
+        #         view_xy[ind_pt, 1],
+        #         color,
+        #     )
 
     @property
     def shape(self):
