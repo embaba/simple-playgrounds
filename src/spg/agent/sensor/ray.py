@@ -383,12 +383,15 @@ class RaySensor(ExternalSensor, ABC):
 
     @property
     def end_positions(self):
-        angles = np.array(
-            [
-                self.angle - self.fov / 2 + i_ray * self.fov / (self._resolution - 1)
-                for i_ray in range(self._resolution)
-            ]
-        )
+        # angles = np.array(
+        #     [
+        #         self.angle - self.fov / 2 + i_ray * self.fov / (self._resolution - 1)
+        #         for i_ray in range(self._resolution)
+        #     ]
+        # )
+        # Optimisation
+        angles = np.linspace(self.angle - self.fov / 2, self.angle + self.fov / 2, self._resolution)
+
         x = self._range * np.cos(angles)
         y = self._range * np.sin(angles)
         return np.vstack((x, y))
