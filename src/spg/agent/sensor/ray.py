@@ -268,15 +268,18 @@ class RayCompute:
 
             points = np.linspace(center_on_view, rays_end, num=sensor.n_points)
 
-            points[:, 0, :] = (points[:, 0, :] > 0) * points[:, 0, :]
-            points[:, 0, :] = (points[:, 0, :] < self._id_view.width) * points[
-                :, 0, :
-            ] + (points[:, 0, :] >= self._id_view.width) * (self._id_view.width - 1)
+            # points[:, 0, :] = (points[:, 0, :] > 0) * points[:, 0, :]
+            # points[:, 0, :] = (points[:, 0, :] < self._id_view.width) * points[
+            #     :, 0, :
+            # ] + (points[:, 0, :] >= self._id_view.width) * (self._id_view.width - 1)
+            #
+            # points[:, 1, :] = (points[:, 1, :] > 0) * points[:, 1, :]
+            # points[:, 1, :] = (points[:, 1, :] < self._id_view.height) * points[
+            #     :, 1, :
+            # ] + (points[:, 1, :] >= self._id_view.height) * (self._id_view.height - 1)
 
-            points[:, 1, :] = (points[:, 1, :] > 0) * points[:, 1, :]
-            points[:, 1, :] = (points[:, 1, :] < self._id_view.height) * points[
-                :, 1, :
-            ] + (points[:, 1, :] >= self._id_view.height) * (self._id_view.height - 1)
+            points[:, 0, :] = np.clip(points[:, 0, :], 0, self._id_view.width - 1)
+            points[:, 1, :] = np.clip(points[:, 1, :], 0, self._id_view.height - 1)
 
             points = points.swapaxes(1, 2).reshape(-1, 2)
 
