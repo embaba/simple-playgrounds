@@ -51,6 +51,11 @@ class Grasper(ActiveInteractor, ABC):
             if self._max_grasped and self._max_grasped <= len(self._grasped_entities):
                 return
 
+            # temporary bug fix : the behaviour of 2, or more, agents grasping the same entities is very weird !
+            # So we can correct this by allowing only one agent to grasp an entity.
+            if len(entity.grasped_by) == 1:
+                return
+
             self._grasped_entities.append(entity)
             self._add_joints(entity)
             entity.grasped_by.append(self)
