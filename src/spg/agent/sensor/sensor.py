@@ -197,4 +197,7 @@ class ExternalSensor(Sensor, ABC):
 
     def pre_step(self):
         super().pre_step()
+
+    def post_step(self):
+        super().post_step()
         self._require_invisible_update = False

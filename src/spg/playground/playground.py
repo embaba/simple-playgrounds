@@ -326,10 +326,11 @@ class Playground:
             for _ in range(pymunk_steps):
                 self.space.step(1.0 / pymunk_steps)
 
+            obs = self._compute_observations()
+
             self._post_step()
             self._done = self._has_terminated()
 
-            obs = self._compute_observations()
             rew = {agent: agent.reward for agent in self._agents}
             if messages:
                 mess = self._transmit_messages(messages)
