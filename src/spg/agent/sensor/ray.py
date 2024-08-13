@@ -283,7 +283,9 @@ class RayCompute:
             rr, cc = points[:, 1].astype(int), points[:, 0].astype(int)
 
             # Get Ids
-            pts = img_id[rr, cc]
+            #pts = img_id[rr, cc] => bug with numpy 2.0
+            #print(f"elements of pts[:, 2] are of type: {pts[:, 2].dtype}")
+            pts = img_id[rr, cc].astype(np.uint64)
 
             ids = 256 * 256 * pts[:, 2] + 256 * pts[:, 1] + pts[:, 0]
 
