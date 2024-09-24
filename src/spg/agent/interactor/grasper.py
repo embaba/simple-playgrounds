@@ -67,15 +67,26 @@ class Grasper(ActiveInteractor, ABC):
 
         assert self._anchor
 
-        j_1 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, 0), (0, 20))
-        j_2 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, 0), (0, -20))
+        # j_1 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, 0), (0, 20))
+        # j_2 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, 0), (0, -20))
+        #
+        # j_3 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, 20), (0, 0))
+        # j_4 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, -20), (0, 0))
 
-        j_3 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, 20), (0, 0))
-        j_4 = pymunk.PinJoint(self._anchor.pm_body, entity.pm_body, (0, -20), (0, 0))
+        # joint_position = (self._anchor.pm_body.position + entity.pm_body.position) * 0.5
+        joint_position = 0.3*self._anchor.pm_body.position + 0.7*entity.pm_body.position
 
-        grasp_joints = [j_1, j_2, j_3, j_4]
+        joint = pymunk.PivotJoint(self._anchor.pm_body, entity.pm_body, tuple(joint_position))
+        joint.collide_bodies = False
+
+        # grasp_joints = [j_1, j_2, j_3, j_4]
+        grasp_joints = [joint]
         self._grasp_joints[entity] = grasp_joints
         self._anchor.playground.space.add(*grasp_joints)
+
+        # draw_options = pymunk.pygame_util.DrawOptions(screen)
+        # space.debug_draw(draw_options)
+
 
     def _release_grasping(self):
 
