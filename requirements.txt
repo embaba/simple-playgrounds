@@ -1,11 +1,11 @@
 arcade>=2.6.17
 gym>=0.26.2
-matplotlib >=3.7.5 #>=3.9.2
-numpy>=1.24.4 #>=2.0.2
+matplotlib >=3.7.5
+numpy>=1.24.4
 Pillow>=9.3.0
 pymunk>=6.4.0
 pytest>=8.3.3
 PyYAML>=6.0.2
-scikit-image>=0.21.0 #>=0.24.0
+scikit-image>=0.21.0
 tqdm>=4.66.5
 tripy>=1.0.0
